@@ -1,0 +1,1231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WanderAI - AI-Powered Travel Recommendations</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #4361ee;
+            --secondary: #3f37c9;
+            --accent: #4cc9f0;
+            --light: #f8f9fa;
+            --dark: #212529;
+            --gradient-start: #5a67d8;
+            --gradient-end: #4c51bf;
+            --beach: #56ccf2;
+            --temple: #834d9b;
+            --country: #11998e;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            min-height: 100vh;
+            color: var(--dark);
+            overflow-x: hidden;
+        }
+        
+        h1, h2, h3, h4, h5 {
+            font-family: 'Playfair Display', serif;
+            font-weight: 600;
+        }
+        
+        .navbar {
+            background: rgba(255, 255, 255, 0.95) !important;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary) !important;
+            font-size: 1.8rem;
+        }
+        
+        .navbar-brand span {
+            color: var(--secondary);
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            margin: 0 8px;
+            color: var(--dark) !important;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+        
+        .nav-link:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover:after,
+        .nav-link.active:after {
+            width: 100%;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+            border: none;
+            border-radius: 50px;
+            padding: 10px 25px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(92, 107, 192, 0.3);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 7px 20px rgba(92, 107, 192, 0.4);
+        }
+        
+        .hero-section {
+            padding-top: 120px;
+            padding-bottom: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero-section:before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://images.unsplash.com/photo-1503220317375-aaad61436b1b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80') no-repeat center center/cover;
+            opacity: 0.15;
+        }
+        
+        .hero-content h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+        
+        .hero-content p {
+            font-size: 1.25rem;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+        
+        .hero-image {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            transform: perspective(1000px) rotateY(-5deg);
+            transition: transform 0.5s ease;
+        }
+        
+        .hero-image:hover {
+            transform: perspective(1000px) rotateY(0);
+        }
+        
+        .hero-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 20px;
+        }
+        
+        .intro-section {
+            padding: 100px 0;
+            background: white;
+        }
+        
+        .section-title {
+            position: relative;
+            margin-bottom: 50px;
+            text-align: center;
+        }
+        
+        .section-title:after {
+            content: '';
+            position: absolute;
+            bottom: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+            border-radius: 2px;
+        }
+        
+        .search-section {
+            padding: 80px 0;
+            background: linear-gradient(to bottom, #f0f4f8, #e2e8f0);
+        }
+        
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+        }
+        
+        .search-box {
+            display: flex;
+            margin-bottom: 30px;
+        }
+        
+        .search-input {
+            flex: 1;
+            border: none;
+            background: #f8f9fa;
+            padding: 15px 20px;
+            border-radius: 50px 0 0 50px;
+            font-size: 1.1rem;
+            box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .search-btn {
+            background: linear-gradient(to right, var(--gradient-start), var(--gradient-end));
+            color: white;
+            border: none;
+            padding: 0 30px;
+            border-radius: 0 50px 50px 0;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .search-btn:hover {
+            opacity: 0.9;
+        }
+        
+        .clear-btn {
+            background: #6c757d;
+            color: white;
+            border: none;
+            padding: 0 20px;
+            border-radius: 50px;
+            margin-left: 10px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .clear-btn:hover {
+            background: #5a6268;
+        }
+        
+        .results-section {
+            padding: 50px 0;
+        }
+        
+        .category-title {
+            position: relative;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .category-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--primary);
+        }
+        
+        .destination-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+            transition: all 0.4s ease;
+            height: 100%;
+            margin-bottom: 30px;
+        }
+        
+        .destination-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+        
+        .card-img-top {
+            height: 220px;
+            object-fit: cover;
+            width: 100%;
+        }
+        
+        .card-body {
+            padding: 25px;
+        }
+        
+        .card-title {
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .card-text {
+            color: #6c757d;
+            margin-bottom: 15px;
+        }
+        
+        .tag {
+            display: inline-block;
+            background: #e9ecef;
+            color: #495057;
+            padding: 5px 12px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            margin-right: 5px;
+            margin-bottom: 10px;
+        }
+        
+        .rating {
+            color: #ffc107;
+            font-size: 1rem;
+            margin-bottom: 15px;
+        }
+        
+        .about-section, .contact-section {
+            padding: 100px 0;
+        }
+        
+        .about-section {
+            background: linear-gradient(to bottom, #ffffff, #f8f9fa);
+        }
+        
+        .contact-section {
+            background: linear-gradient(to bottom, #f8f9fa, #ffffff);
+        }
+        
+        .feature-box {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.05);
+            height: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .footer {
+            background: linear-gradient(to right, #2c3e50, #4a6491);
+            color: white;
+            padding: 70px 0 30px;
+        }
+        
+        .footer-title {
+            position: relative;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .footer-title:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: var(--accent);
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            display: block;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            transform: translateX(5px);
+        }
+        
+        .social-links a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            color: white;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-links a:hover {
+            background: var(--accent);
+            transform: translateY(-5px);
+        }
+        
+        .copyright {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+            margin-top: 50px;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(67, 97, 238, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 15px rgba(67, 97, 238, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(67, 97, 238, 0);
+            }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.8s ease forwards;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .delay-1 {
+            animation-delay: 0.1s;
+        }
+        
+        .delay-2 {
+            animation-delay: 0.2s;
+        }
+        
+        .delay-3 {
+            animation-delay: 0.3s;
+        }
+        
+        .delay-4 {
+            animation-delay: 0.4s;
+        }
+        
+        .beach-bg {
+            background: linear-gradient(to right, var(--beach), #2f80ed);
+        }
+        
+        .temple-bg {
+            background: linear-gradient(to right, var(--temple), #d04ed6);
+        }
+        
+        .country-bg {
+            background: linear-gradient(to right, var(--country), #38ef7d);
+        }
+        
+        .ai-badge {
+            background: linear-gradient(to right, #ff6b6b, #ff8e53);
+            color: white;
+            font-size: 0.8rem;
+            padding: 3px 12px;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+            
+            .hero-content p {
+                font-size: 1.1rem;
+            }
+            
+            .search-box {
+                flex-direction: column;
+            }
+            
+            .search-input {
+                border-radius: 50px;
+                margin-bottom: 10px;
+            }
+            
+            .search-btn {
+                border-radius: 50px;
+                padding: 15px;
+                margin-bottom: 10px;
+            }
+            
+            .clear-btn {
+                border-radius: 50px;
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#"><i class="fas fa-compass me-2"></i>Wander<span>AI</span></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#about">About Us</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact Us</a>
+                    </li>
+                </ul>
+                <div class="d-flex ms-lg-3 mt-3 mt-lg-0">
+                    <input type="text" class="form-control search-input" id="searchInput" placeholder="Search destinations...">
+                    <button class="btn btn-primary search-btn" id="searchBtn"><i class="fas fa-search me-2"></i>Search</button>
+                    <button class="btn clear-btn" id="clearBtn">Clear</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <div class="hero-content">
+                        <h1>Discover Your Perfect Travel Destination</h1>
+                        <p>Our intelligent AI matches your preferences with thousands of destinations to find your ideal getaway.</p>
+                        <div class="d-flex flex-wrap">
+                            <a href="#search" class="btn btn-primary btn-lg me-3 mb-3 pulse"><i class="fas fa-magic me-2"></i>Find My Perfect Trip</a>
+                            <a href="#destinations" class="btn btn-outline-light btn-lg mb-3"><i class="fas fa-globe-americas me-2"></i>Explore Destinations</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="hero-image">
+                        <img src="https://images.unsplash.com/photo-1503220317375-aaad61436b1b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" alt="Travel destinations">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Introduction Section -->
+    <section class="intro-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h2 class="section-title">Welcome to WanderAI</h2>
+                    <p class="lead mb-5">Your AI-powered travel companion helping you discover perfect destinations based on your preferences.</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-4 mb-4 fade-in">
+                    <div class="feature-box text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-robot"></i>
+                        </div>
+                        <h3>AI-Powered Recommendations</h3>
+                        <p>Our advanced algorithm analyzes thousands of data points to match your preferences with the perfect destinations.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4 fade-in delay-1">
+                    <div class="feature-box text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-globe-americas"></i>
+                        </div>
+                        <h3>Global Destination Database</h3>
+                        <p>Access comprehensive information on thousands of destinations worldwide, from popular spots to hidden gems.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4 fade-in delay-2">
+                    <div class="feature-box text-center">
+                        <div class="feature-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3>Personalized Experience</h3>
+                        <p>Get recommendations tailored specifically to your travel style, budget, and preferences.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Section -->
+    <section class="search-section" id="search">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-lg-10">
+                    <div class="search-container">
+                        <h2 class="text-center mb-4">Find Your Dream Destination</h2>
+                        <p class="text-center mb-5">Search for destinations by keywords like "beach", "temple", "country", or any other preference.</p>
+                        
+                        <div class="search-box">
+                            <input type="text" class="search-input" id="mainSearchInput" placeholder="Try 'beach', 'temple', or 'country'...">
+                            <button class="search-btn" id="mainSearchBtn"><i class="fas fa-search me-2"></i>Search</button>
+                            <button class="clear-btn" id="mainClearBtn"><i class="fas fa-times me-2"></i>Clear</button>
+                        </div>
+                        
+                        <div class="text-center">
+                            <h4>Popular Searches:</h4>
+                            <div class="mt-3">
+                                <button class="btn btn-outline-primary me-2 mb-2" data-term="beach">Beaches</button>
+                                <button class="btn btn-outline-primary me-2 mb-2" data-term="temple">Temples</button>
+                                <button class="btn btn-outline-primary me-2 mb-2" data-term="country">Countries</button>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Search Results -->
+    <section class="results-section" id="results">
+        <div class="container">
+            <!-- Beach Results -->
+            <div class="mb-5" id="beachResults">
+                <h3 class="category-title"><i class="fas fa-umbrella-beach me-3"></i>Beach Recommendations</h3>
+                <p class="mb-4">Top beach destinations based on global search trends and traveler preferences</p>
+                <div class="row">
+                    <div class="col-md-6 fade-in">
+                        <div class="destination-card beach-bg">
+                            <img src="https://images.unsplash.com/photo-1505228395891-9a51e7e86bf6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" class="card-img-top" alt="Coopers Beach">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="card-title mb-0">Coopers Beach</h5>
+                                    <span class="ai-badge">AI Recommended</span>
+                                </div>
+                                <p class="card-text">Southampton, New York, USA</p>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                    <span class="ms-2">4.8</span>
+                                </div>
+                                <p>Ranked No. 1 beach in the US for 2025, known for its large sand dunes and pristine location.</p>
+                                <div>
+                                    <span class="tag">Family-friendly</span>
+                                    <span class="tag">Scenic</span>
+                                    <span class="tag">Clean waters</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 fade-in delay-1">
+                        <div class="destination-card beach-bg">
+                            <img src="https://images.unsplash.com/photo-1506953823976-52e1fdc0149a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" class="card-img-top" alt="Wailea Beach">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="card-title mb-0">Wailea Beach</h5>
+                                    <span class="ai-badge">AI Recommended</span>
+                                </div>
+                                <p class="card-text">Maui, Hawaii, USA</p>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <span class="ms-2">4.9</span>
+                                </div>
+                                <p>Stunning white sand beach with crystal-clear waters, perfect for swimming and snorkeling.</p>
+                                <div>
+                                    <span class="tag">Snorkeling</span>
+                                    <span class="tag">Luxury resorts</span>
+                                    <span class="tag">Sunset views</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Temple Results -->
+            <div class="mb-5" id="templeResults">
+                <h3 class="category-title"><i class="fas fa-place-of-worship me-3"></i>Temple Recommendations</h3>
+                <p class="mb-4">Sacred sites with cultural significance and architectural beauty</p>
+                <div class="row">
+                    <div class="col-md-6 fade-in">
+                        <div class="destination-card temple-bg">
+                            <img src="https://www.google.com/imgres?imgurl=https://en.armradio.am/wp-content/uploads/2022/03/Geghard-Monastery.jpg&tbnid=aA25CCLg6wwZ6M&vet=1&imgrefurl=https://en.armradio.am/2022/03/25/geghard-monastery-in-armenia-on-lonely-planets-120-of-worlds-most-amazing-buildings/&docid=ly0FgqNLkJWgcM&w=822&h=564&source=sh/x/im/m5/1&kgs=e4f4bcec95b3eb95" class="card-img-top" alt="Geghard Monastery">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="card-title mb-0">Geghard Monastery</h5>
+                                    <span class="ai-badge">AI Recommended</span>
+                                </div>
+                                <p class="card-text">Kotayk Province, Armenia</p>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                    <span class="ms-2">4.7</span>
+                                </div>
+                                <p>A medieval monastery partly carved out of the adjacent mountain, surrounded by towering cliffs.</p>
+                                <div>
+                                    <span class="tag">UNESCO Heritage</span>
+                                    <span class="tag">Historical</span>
+                                    <span class="tag">Architecture</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 fade-in delay-1">
+                        <div class="destination-card temple-bg">
+                            <img src="https://images.unsplash.com/photo-1617196034796-73dfa7b1fd56?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" class="card-img-top" alt="Haghartsin Monastery">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="card-title mb-0">Haghartsin Monastery</h5>
+                                    <span class="ai-badge">AI Recommended</span>
+                                </div>
+                                <p class="card-text">Dilijan, Armenia</p>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <span class="ms-2">4.5</span>
+                                </div>
+                                <p>13th-century monastery nestled in the forested hills of Dilijan, known for its spiritual atmosphere.</p>
+                                <div>
+                                    <span class="tag">Historical</span>
+                                    <span class="tag">Nature</span>
+                                    <span class="tag">Hiking</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Country Results -->
+            <div class="mb-5" id="countryResults">
+                <h3 class="category-title"><i class="fas fa-globe-americas me-3"></i>Country Recommendations</h3>
+                <p class="mb-4">Diverse destinations offering unique cultural experiences</p>
+                <div class="row">
+                    <div class="col-md-6 fade-in">
+                        <div class="destination-card country-bg">
+                            <img src="https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" class="card-img-top" alt="Cameroon">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="card-title mb-0">Cameroon</h5>
+                                    <span class="ai-badge">AI Recommended</span>
+                                </div>
+                                <p class="card-text">Africa</p>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="far fa-star"></i>
+                                    <span class="ms-2">4.3</span>
+                                </div>
+                                <p>Celebrating 65 years of independence in 2025, offering pristine beaches, vibrant cities, and rich wildlife.</p>
+                                <div>
+                                    <span class="tag">Beaches</span>
+                                    <span class="tag">Wildlife</span>
+                                    <span class="tag">Cultural diversity</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 fade-in delay-1">
+                        <div class="destination-card country-bg">
+                            <img src="https://images.unsplash.com/photo-1566977771092-015d8c4f0d3d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" class="card-img-top" alt="Lithuania">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h5 class="card-title mb-0">Lithuania</h5>
+                                    <span class="ai-badge">AI Recommended</span>
+                                </div>
+                                <p class="card-text">Europe</p>
+                                <div class="rating">
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star"></i>
+                                    <i class="fas fa-star-half-alt"></i>
+                                    <span class="ms-2">4.6</span>
+                                </div>
+                                <p>European Green Capital 2025, known for its protected forests, lakes, and sandy dunes along the Baltic Sea.</p>
+                                <div>
+                                    <span class="tag">Ecotourism</span>
+                                    <span class="tag">History</span>
+                                    <span class="tag">Nature</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Destinations -->
+    <section id="destinations" class="py-5 bg-light">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title">AI-Recommended Destinations</h2>
+                <p class="lead">Our top picks based on traveler preferences</p>
+            </div>
+            
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <div class="destination-card">
+                        <img src="https://images.unsplash.com/photo-1518548419970-58e3b4079ab2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" class="card-img-top" alt="Bali">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title mb-0">Bali, Indonesia</h5>
+                                <span class="ai-badge">Top Destination</span>
+                            </div>
+                            <p class="card-text">The Island of Gods offers stunning beaches, vibrant culture, and spiritual retreats.</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="ms-2">4.8</span>
+                            </div>
+                            <div>
+                                <span class="tag">Beaches</span>
+                                <span class="tag">Culture</span>
+                                <span class="tag">Adventure</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="destination-card">
+                        <img src="https://images.app.goo.gl/CpkDFowREfytECZ57" class="card-img-top" alt="Santorini">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title mb-0">Santorini, Greece</h5>
+                                <span class="ai-badge">Romantic Getaway</span>
+                            </div>
+                            <p class="card-text">Famous for its white-washed buildings, blue domes, and breathtaking sunsets.</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <span class="ms-2">4.9</span>
+                            </div>
+                            <div>
+                                <span class="tag">Romantic</span>
+                                <span class="tag">Views</span>
+                                <span class="tag">Luxury</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <div class="destination-card">
+                        <img src="https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" class="card-img-top" alt="Kyoto">
+                        <div class="card-body">
+                            <div class="d-flex justify-content-between align-items-center mb-3">
+                                <h5 class="card-title mb-0">Kyoto, Japan</h5>
+                                <span class="ai-badge">Cultural Gem</span>
+                            </div>
+                            <p class="card-text">Ancient capital with stunning temples, traditional gardens, and geisha culture.</p>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star"></i>
+                                <i class="fas fa-star-half-alt"></i>
+                                <span class="ms-2">4.7</span>
+                            </div>
+                            <div>
+                                <span class="tag">Temples</span>
+                                <span class="tag">History</span>
+                                <span class="tag">Food</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section class="about-section" id="about">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <h2 class="section-title">About WanderAI</h2>
+                    <p class="lead">Learn about our mission and team</p>
+                </div>
+            </div>
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" alt="Our Team" class="img-fluid rounded shadow">
+                </div>
+                <div class="col-lg-6">
+                    <h3 class="mb-4">Our Story</h3>
+                    <p>Founded in 2023, WanderAI was born from a passion for travel and technology. Our team of travel enthusiasts, data scientists, and AI experts came together with a shared vision: to revolutionize how people discover and plan their travels.</p>
+                    <p>We've combined cutting-edge artificial intelligence with comprehensive travel knowledge to create a platform that delivers personalized, relevant recommendations that match your unique travel preferences.</p>
+                    
+                    <div class="row mt-5">
+                        <div class="col-md-6 mb-4">
+                            <div class="d-flex">
+                                <div class="me-4">
+                                    <i class="fas fa-brain fa-2x text-primary"></i>
+                                </div>
+                                <div>
+                                    <h5>AI Technology</h5>
+                                    <p>Advanced algorithms for precise recommendations</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="d-flex">
+                                <div class="me-4">
+                                    <i class="fas fa-globe fa-2x text-primary"></i>
+                                </div>
+                                <div>
+                                    <h5>Global Coverage</h5>
+                                    <p>Thousands of destinations worldwide</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="d-flex">
+                                <div class="me-4">
+                                    <i class="fas fa-user-friends fa-2x text-primary"></i>
+                                </div>
+                                <div>
+                                    <h5>Expert Team</h5>
+                                    <p>Travel experts and AI specialists</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-4">
+                            <div class="d-flex">
+                                <div class="me-4">
+                                    <i class="fas fa-sync-alt fa-2x text-primary"></i>
+                                </div>
+                                <div>
+                                    <h5>Continuous Updates</h5>
+                                    <p>Always improving our recommendations</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <div class="row justify-content-center mb-5">
+                <div class="col-lg-8 text-center">
+                    <h2 class="section-title">Contact Us</h2>
+                    <p class="lead">We'd love to hear from you</p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <form>
+                        <div class="mb-4">
+                            <label class="form-label">Your Name</label>
+                            <input type="text" class="form-control form-control-lg">
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Email Address</label>
+                            <input type="email" class="form-control form-control-lg">
+                        </div>
+                        <div class="mb-4">
+                            <label class="form-label">Message</label>
+                            <textarea class="form-control form-control-lg" rows="5"></textarea>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+                    </form>
+                </div>
+                <div class="col-lg-6">
+                    <div class="p-5 bg-white rounded shadow">
+                        <h3 class="mb-4">Get In Touch</h3>
+                        <div class="d-flex mb-4">
+                            <div class="me-4">
+                                <i class="fas fa-map-marker-alt fa-2x text-primary"></i>
+                            </div>
+                            <div>
+                                <h5>Address</h5>
+                                <p>123 Travel Street, Wanderlust City, WC 12345</p>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-4">
+                            <div class="me-4">
+                                <i class="fas fa-phone-alt fa-2x text-primary"></i>
+                            </div>
+                            <div>
+                                <h5>Phone</h5>
+                                <p>+1 (555) 123-4567</p>
+                            </div>
+                        </div>
+                        <div class="d-flex mb-4">
+                            <div class="me-4">
+                                <i class="fas fa-envelope fa-2x text-primary"></i>
+                            </div>
+                            <div>
+                                <h5>Email</h5>
+                                <p>info@wanderai.com</p>
+                            </div>
+                        </div>
+                        <div class="d-flex">
+                            <div class="me-4">
+                                <i class="fas fa-clock fa-2x text-primary"></i>
+                            </div>
+                            <div>
+                                <h5>Working Hours</h5>
+                                <p>Monday-Friday: 9am-6pm</p>
+                                <p>Saturday: 10am-4pm</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="row g-5">
+                <div class="col-lg-4">
+                    <h4 class="footer-title">WanderAI</h4>
+                    <p>Your AI-powered travel companion helping you discover perfect destinations based on your preferences.</p>
+                    <div class="social-links mt-4">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-pinterest"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <h4 class="footer-title">Quick Links</h4>
+                    <div class="footer-links">
+                        <a href="#">Home</a>
+                        <a href="#about">About Us</a>
+                        <a href="#contact">Contact Us</a>
+                        <a href="#destinations">Destinations</a>
+                        <a href="#">Blog</a>
+                    </div>
+                </div>
+                <div class="col-lg-2">
+                    <h4 class="footer-title">Destinations</h4>
+                    <div class="footer-links">
+                        <a href="#">Beach Getaways</a>
+                        <a href="#">Cultural Tours</a>
+                        <a href="#">Mountain Adventures</a>
+                        <a href="#">City Breaks</a>
+                        <a href="#">Luxury Retreats</a>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <h4 class="footer-title">Newsletter</h4>
+                    <p>Subscribe to get travel inspiration and exclusive deals</p>
+                    <div class="input-group mt-3">
+                        <input type="email" class="form-control" placeholder="Your email address">
+                        <button class="btn btn-primary">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+            <div class="copyright">
+                <p>&copy; 2023 WanderAI. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Search functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Elements
+            const searchInput = document.getElementById('searchInput');
+            const searchBtn = document.getElementById('searchBtn');
+            const clearBtn = document.getElementById('clearBtn');
+            const mainSearchInput = document.getElementById('mainSearchInput');
+            const mainSearchBtn = document.getElementById('mainSearchBtn');
+            const mainClearBtn = document.getElementById('mainClearBtn');
+            const popularSearches = document.querySelectorAll('[data-term]');
+            
+            // Results sections
+            const beachResults = document.getElementById('beachResults');
+            const templeResults = document.getElementById('templeResults');
+            const countryResults = document.getElementById('countryResults');
+            const resultsSection = document.getElementById('results');
+            
+            // Hide all results initially
+            beachResults.style.display = 'none';
+            templeResults.style.display = 'none';
+            countryResults.style.display = 'none';
+            
+            // Search function
+            function performSearch(term) {
+                // Reset all results
+                beachResults.style.display = 'none';
+                templeResults.style.display = 'none';
+                countryResults.style.display = 'none';
+                
+                // Show results section
+                resultsSection.style.display = 'block';
+                
+                // Process search term
+                const searchTerm = term.toLowerCase();
+                
+                // Check for beach-related terms
+                if (searchTerm.includes('beach') || searchTerm.includes('shore') || searchTerm.includes('coast')) {
+                    beachResults.style.display = 'block';
+                    scrollToResults();
+                } 
+                // Check for temple-related terms
+                else if (searchTerm.includes('temple') || searchTerm.includes('monastery') || searchTerm.includes('shrine')) {
+                    templeResults.style.display = 'block';
+                    scrollToResults();
+                } 
+                // Check for country-related terms
+                else if (searchTerm.includes('country') || searchTerm.includes('nation') || searchTerm.includes('destination')) {
+                    countryResults.style.display = 'block';
+                    scrollToResults();
+                } 
+                // No results
+                else {
+                    alert('No results found. Try searching for "beach", "temple", or "country".');
+                }
+            }
+            
+            // Clear search function
+            function clearSearch() {
+                searchInput.value = '';
+                mainSearchInput.value = '';
+                beachResults.style.display = 'none';
+                templeResults.style.display = 'none';
+                countryResults.style.display = 'none';
+            }
+            
+            // Scroll to results function
+            function scrollToResults() {
+                setTimeout(() => {
+                    resultsSection.scrollIntoView({
+                        behavior: 'smooth'
+                    });
+                }, 300);
+            }
+            
+            // Event listeners
+            searchBtn.addEventListener('click', () => {
+                if (searchInput.value.trim() !== '') {
+                    performSearch(searchInput.value);
+                }
+            });
+            
+            mainSearchBtn.addEventListener('click', () => {
+                if (mainSearchInput.value.trim() !== '') {
+                    performSearch(mainSearchInput.value);
+                }
+            });
+            
+            clearBtn.addEventListener('click', clearSearch);
+            mainClearBtn.addEventListener('click', clearSearch);
+            
+            // Popular search buttons
+            popularSearches.forEach(button => {
+                button.addEventListener('click', () => {
+                    const term = button.getAttribute('data-term');
+                    searchInput.value = term;
+                    mainSearchInput.value = term;
+                    performSearch(term);
+                });
+            });
+            
+            // Allow Enter key to trigger search
+            searchInput.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') {
+                    performSearch(searchInput.value);
+                }
+            });
+            
+            mainSearchInput.addEventListener('keyup', (e) => {
+                if (e.key === 'Enter') {
+                    performSearch(mainSearchInput.value);
+                }
+            });
+            
+            // Animation for fade-in elements
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = 1;
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+            
+            fadeElements.forEach(element => {
+                element.style.opacity = 0;
+                element.style.transform = 'translateY(20px)';
+                element.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                observer.observe(element);
+            });
+        });
+    </script>
+</body>
+</html>
